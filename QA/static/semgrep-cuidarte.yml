@@ -1,0 +1,56 @@
+# Reglas Semgrep personalizadas para Cuidarte+ (complementan p/javascript y p/owasp-top-ten)
+# Ejecución (PowerShell, desde la raíz del repo):
+#   docker run --rm -v "${PWD}:/src" semgrep/semgrep semgrep --config p/javascript --config p/owasp-top-ten --config /src/QA/static/semgrep-cuidarte.yml /src/BACKEND/src --json -o /src/QA/reports/semgrep.json
+rules:
+  - id: cuidarte-plaintext-password-compare
+    languages: [javascript]
+    severity: ERROR
+    message: "Comparación de contraseña en texto plano (CWE-256). Usar bcrypt.compare/argon2.verify."
+    metadata: { cwe: "CWE-256", owasp: "A02:2021" }
+    pattern-either:
+      - pattern: $U.contrasena !== $P
+      - pattern: $U.contrasena != $P
+      - pattern: $U.contrasena === $P
+
+  - id: cuidarte-jwt-secret-fallback
+    languages: [javascript]
+    severity: ERROR
+    message: "Secreto JWT con valor por defecto embebido (CWE-798). Fallar al iniciar si JWT_SECRET no existe."
+    metadata: { cwe: "CWE-798", owasp: "A07:2021" }
+    pattern: process.env.JWT_SECRET || "..."
+
+  - id: cuidarte-error-message-leak
+    languages: [javascript]
+    severity: WARNING
+    message: "Se devuelve err.message al cliente (CWE-209). Registrar internamente y responder mensaje genérico."
+    metadata: { cwe: "CWE-209", owasp: "A05:2021" }
+    pattern: |
+      $RES.status(500).json({..., glosa: $ERR.message || $X, ...})
+
+  - id: cuidarte-route-without-auth
+    languages: [javascript]
+    severity: ERROR
+    message: "Handler de ruta que ejecuta SQL sin invocar getUserFromAuthHeader/requireRole (CWE-306)."
+    metadata: { cwe: "CWE-306", owasp: "A01:2021" }
+    patterns:
+      - pattern: |
+          router.$M($PATH, async (req, res) => { ... })
+      - pattern-not: |
+          router.$M($PATH, async (req, res) => { ... getUserFromAuthHeader(req) ... })
+      - pattern-not: |
+          router.$M($PATH, async (req, res) => { ... requireRole(req, ...) ... })
+      - pattern-inside: |
+          router.$M($PATH, async (req, res) => { ... pool.query(...) ... })
+
+  - id: cuidarte-cors-wildcard
+    languages: [javascript]
+    severity: WARNING
+    message: "CORS sin lista blanca de orígenes (CWE-942)."
+    metadata: { cwe: "CWE-942", owasp: "A05:2021" }
+    pattern: app.use(cors())
+
+  - id: cuidarte-artificial-delay
+    languages: [javascript]
+    severity: WARNING
+    message: "Middleware de retardo artificial en ruta productiva (ISO/IEC 25010 – comportamiento temporal)."
+    pattern: delayMiddleware($MS)

@@ -1,0 +1,1556 @@
+{
+  "herramienta": "sast-scan.mjs (Cuidarte+ QA)",
+  "metrics": {
+    "fecha": "2026-11-02T17:09:51.743Z",
+    "archivos_analizados": 82,
+    "loc_backend": 2256,
+    "loc_frontend": 7680,
+    "endpoints": 32,
+    "endpoints_publicos_por_diseno": 4,
+    "endpoints_sin_control_efectivo": 7,
+    "cc_max": 22,
+    "cc_promedio": 7.9
+  },
+  "resumen": {
+    "Crítica": 17,
+    "Alta": 14,
+    "Media": 61,
+    "Baja": 8,
+    "Info": 0
+  },
+  "porRegla": [
+    {
+      "regla": "S03",
+      "titulo": "Contraseña almacenada/comparada en texto plano (sin hash)",
+      "severidad": "Crítica",
+      "ocurrencias": 3
+    },
+    {
+      "regla": "S04",
+      "titulo": "Endpoint sin verificación de autenticación/autorización",
+      "severidad": "Crítica",
+      "ocurrencias": 8
+    },
+    {
+      "regla": "S05",
+      "titulo": "Autorización evaluada después de ejecutar la operación",
+      "severidad": "Crítica",
+      "ocurrencias": 4
+    },
+    {
+      "regla": "S15",
+      "titulo": "Credenciales por defecto en datos semilla (usuario = contraseña)",
+      "severidad": "Crítica",
+      "ocurrencias": 3
+    },
+    {
+      "regla": "S01",
+      "titulo": "Secreto JWT con valor por defecto inseguro (fallback hardcodeado)",
+      "severidad": "Alta",
+      "ocurrencias": 8
+    },
+    {
+      "regla": "S02",
+      "titulo": "Archivo .env / secreto versionado en el repositorio",
+      "severidad": "Alta",
+      "ocurrencias": 4
+    },
+    {
+      "regla": "S09",
+      "titulo": "Login sin limitación de intentos (rate limiting / bloqueo)",
+      "severidad": "Alta",
+      "ocurrencias": 1
+    },
+    {
+      "regla": "S23",
+      "titulo": "Registro sin consentimiento explícito para datos sensibles de salud",
+      "severidad": "Alta",
+      "ocurrencias": 2
+    },
+    {
+      "regla": "S06",
+      "titulo": "Exposición de mensajes internos de error al cliente",
+      "severidad": "Media",
+      "ocurrencias": 34
+    },
+    {
+      "regla": "S10",
+      "titulo": "Retardo artificial en rutas productivas (delay middleware)",
+      "severidad": "Media",
+      "ocurrencias": 5
+    },
+    {
+      "regla": "S11",
+      "titulo": "Validación no aplica datos saneados (stripUnknown descartado) → asignación masiva",
+      "severidad": "Media",
+      "ocurrencias": 1
+    },
+    {
+      "regla": "S12",
+      "titulo": "Dato personal (RUT) escrito en registro de auditoría/log",
+      "severidad": "Media",
+      "ocurrencias": 1
+    },
+    {
+      "regla": "S13",
+      "titulo": "Token de sesión almacenado en localStorage",
+      "severidad": "Media",
+      "ocurrencias": 1
+    },
+    {
+      "regla": "S16",
+      "titulo": "Política de contraseñas débil (mínimo 6 caracteres, sin complejidad)",
+      "severidad": "Media",
+      "ocurrencias": 8
+    },
+    {
+      "regla": "S17",
+      "titulo": "Imagen base con runtime fuera de soporte (Node.js 18 EOL) / contenedor ejecuta como root",
+      "severidad": "Media",
+      "ocurrencias": 2
+    },
+    {
+      "regla": "S18",
+      "titulo": "Dockerfile copia directorio no versionado (build no reproducible desde clon limpio)",
+      "severidad": "Media",
+      "ocurrencias": 1
+    },
+    {
+      "regla": "S19",
+      "titulo": "Validación de tipo de archivo basada sólo en MIME declarado por el cliente",
+      "severidad": "Media",
+      "ocurrencias": 1
+    },
+    {
+      "regla": "S22",
+      "titulo": "Validación de RUT sólo por formato (sin dígito verificador módulo 11)",
+      "severidad": "Media",
+      "ocurrencias": 5
+    },
+    {
+      "regla": "S07",
+      "titulo": "CORS abierto a cualquier origen",
+      "severidad": "Baja",
+      "ocurrencias": 1
+    },
+    {
+      "regla": "S08",
+      "titulo": "Ausencia de cabeceras de seguridad HTTP (helmet / CSP)",
+      "severidad": "Baja",
+      "ocurrencias": 2
+    },
+    {
+      "regla": "S14",
+      "titulo": "Cabecera Content-Disposition con nombre de archivo sin sanear",
+      "severidad": "Baja",
+      "ocurrencias": 1
+    },
+    {
+      "regla": "S20",
+      "titulo": "Código duplicado: verificación de token replicada por módulo (sin middleware común)",
+      "severidad": "Baja",
+      "ocurrencias": 1
+    },
+    {
+      "regla": "S21",
+      "titulo": "Documentación/Swagger y logging de desarrollo expuestos en producción",
+      "severidad": "Baja",
+      "ocurrencias": 3
+    }
+  ],
+  "routeInventory": [
+    {
+      "publico_por_diseno": false,
+      "metodo": "POST",
+      "ruta": "/auditoria",
+      "archivo": "BACKEND/src/routes/audit.js",
+      "linea": 19,
+      "autenticacion": "Sí",
+      "cc_aprox": 6
+    },
+    {
+      "publico_por_diseno": false,
+      "metodo": "GET",
+      "ruta": "/auditoria",
+      "archivo": "BACKEND/src/routes/audit.js",
+      "linea": 46,
+      "autenticacion": "Sí",
+      "cc_aprox": 6
+    },
+    {
+      "publico_por_diseno": true,
+      "metodo": "POST",
+      "ruta": "/autenticacion/login",
+      "archivo": "BACKEND/src/routes/auth.js",
+      "linea": 10,
+      "autenticacion": "No",
+      "cc_aprox": 8
+    },
+    {
+      "publico_por_diseno": true,
+      "metodo": "POST",
+      "ruta": "/autenticacion/registro",
+      "archivo": "BACKEND/src/routes/auth.js",
+      "linea": 71,
+      "autenticacion": "No",
+      "cc_aprox": 12
+    },
+    {
+      "publico_por_diseno": false,
+      "metodo": "POST",
+      "ruta": "/documentos",
+      "archivo": "BACKEND/src/routes/documentos.js",
+      "linea": 66,
+      "autenticacion": "Sí",
+      "cc_aprox": 8
+    },
+    {
+      "publico_por_diseno": false,
+      "metodo": "GET",
+      "ruta": "/documentos/examen/:examen_id",
+      "archivo": "BACKEND/src/routes/documentos.js",
+      "linea": 121,
+      "autenticacion": "Sí",
+      "cc_aprox": 9
+    },
+    {
+      "publico_por_diseno": false,
+      "metodo": "GET",
+      "ruta": "/documentos/:id",
+      "archivo": "BACKEND/src/routes/documentos.js",
+      "linea": 184,
+      "autenticacion": "Sí",
+      "cc_aprox": 12
+    },
+    {
+      "publico_por_diseno": false,
+      "metodo": "DELETE",
+      "ruta": "/documentos/:id",
+      "archivo": "BACKEND/src/routes/documentos.js",
+      "linea": 263,
+      "autenticacion": "Sí",
+      "cc_aprox": 6
+    },
+    {
+      "publico_por_diseno": false,
+      "metodo": "POST",
+      "ruta": "/examenes",
+      "archivo": "BACKEND/src/routes/examenes.js",
+      "linea": 46,
+      "autenticacion": "Sí",
+      "cc_aprox": 9
+    },
+    {
+      "publico_por_diseno": false,
+      "metodo": "GET",
+      "ruta": "/examenes",
+      "archivo": "BACKEND/src/routes/examenes.js",
+      "linea": 99,
+      "autenticacion": "Sí",
+      "cc_aprox": 9
+    },
+    {
+      "publico_por_diseno": false,
+      "metodo": "GET",
+      "ruta": "/examenes/:id",
+      "archivo": "BACKEND/src/routes/examenes.js",
+      "linea": 179,
+      "autenticacion": "Sí",
+      "cc_aprox": 10
+    },
+    {
+      "publico_por_diseno": false,
+      "metodo": "GET",
+      "ruta": "/examenes/paciente/:paciente_id",
+      "archivo": "BACKEND/src/routes/examenes.js",
+      "linea": 262,
+      "autenticacion": "Sí",
+      "cc_aprox": 9
+    },
+    {
+      "publico_por_diseno": false,
+      "metodo": "PUT",
+      "ruta": "/examenes/:id",
+      "archivo": "BACKEND/src/routes/examenes.js",
+      "linea": 330,
+      "autenticacion": "Sí",
+      "cc_aprox": 9
+    },
+    {
+      "publico_por_diseno": false,
+      "metodo": "DELETE",
+      "ruta": "/examenes/:id",
+      "archivo": "BACKEND/src/routes/examenes.js",
+      "linea": 396,
+      "autenticacion": "Sí",
+      "cc_aprox": 6
+    },
+    {
+      "publico_por_diseno": false,
+      "metodo": "POST",
+      "ruta": "/pacientes",
+      "archivo": "BACKEND/src/routes/pacientes.js",
+      "linea": 48,
+      "autenticacion": "Sí",
+      "cc_aprox": 22
+    },
+    {
+      "publico_por_diseno": false,
+      "metodo": "GET",
+      "ruta": "/pacientes",
+      "archivo": "BACKEND/src/routes/pacientes.js",
+      "linea": 145,
+      "autenticacion": "Sí",
+      "cc_aprox": 4
+    },
+    {
+      "publico_por_diseno": false,
+      "metodo": "GET",
+      "ruta": "/pacientes/:id",
+      "archivo": "BACKEND/src/routes/pacientes.js",
+      "linea": 173,
+      "autenticacion": "Sí",
+      "cc_aprox": 12
+    },
+    {
+      "publico_por_diseno": false,
+      "metodo": "GET",
+      "ruta": "/pacientes/buscar/rut/:rut",
+      "archivo": "BACKEND/src/routes/pacientes.js",
+      "linea": 249,
+      "autenticacion": "No",
+      "cc_aprox": 4
+    },
+    {
+      "publico_por_diseno": false,
+      "metodo": "PUT",
+      "ruta": "/pacientes/:id",
+      "archivo": "BACKEND/src/routes/pacientes.js",
+      "linea": 276,
+      "autenticacion": "Sí",
+      "cc_aprox": 17
+    },
+    {
+      "publico_por_diseno": false,
+      "metodo": "DELETE",
+      "ruta": "/pacientes/:id",
+      "archivo": "BACKEND/src/routes/pacientes.js",
+      "linea": 387,
+      "autenticacion": "Sí",
+      "cc_aprox": 6
+    },
+    {
+      "publico_por_diseno": false,
+      "metodo": "POST",
+      "ruta": "/roles",
+      "archivo": "BACKEND/src/routes/roles.js",
+      "linea": 18,
+      "autenticacion": "Parcial",
+      "cc_aprox": 4
+    },
+    {
+      "publico_por_diseno": false,
+      "metodo": "GET",
+      "ruta": "/roles",
+      "archivo": "BACKEND/src/routes/roles.js",
+      "linea": 36,
+      "autenticacion": "No",
+      "cc_aprox": 3
+    },
+    {
+      "publico_por_diseno": false,
+      "metodo": "GET",
+      "ruta": "/roles/:id",
+      "archivo": "BACKEND/src/routes/roles.js",
+      "linea": 46,
+      "autenticacion": "No",
+      "cc_aprox": 4
+    },
+    {
+      "publico_por_diseno": false,
+      "metodo": "PUT",
+      "ruta": "/roles/:id",
+      "archivo": "BACKEND/src/routes/roles.js",
+      "linea": 57,
+      "autenticacion": "Parcial",
+      "cc_aprox": 5
+    },
+    {
+      "publico_por_diseno": false,
+      "metodo": "DELETE",
+      "ruta": "/roles/:id",
+      "archivo": "BACKEND/src/routes/roles.js",
+      "linea": 76,
+      "autenticacion": "Parcial",
+      "cc_aprox": 5
+    },
+    {
+      "publico_por_diseno": true,
+      "metodo": "GET",
+      "ruta": "/tipo-examen",
+      "archivo": "BACKEND/src/routes/tipo-examen.js",
+      "linea": 6,
+      "autenticacion": "No",
+      "cc_aprox": 3
+    },
+    {
+      "publico_por_diseno": true,
+      "metodo": "GET",
+      "ruta": "/tipo-examen/:id",
+      "archivo": "BACKEND/src/routes/tipo-examen.js",
+      "linea": 22,
+      "autenticacion": "No",
+      "cc_aprox": 4
+    },
+    {
+      "publico_por_diseno": false,
+      "metodo": "POST",
+      "ruta": "/usuarios",
+      "archivo": "BACKEND/src/routes/users.js",
+      "linea": 23,
+      "autenticacion": "Sí",
+      "cc_aprox": 9
+    },
+    {
+      "publico_por_diseno": false,
+      "metodo": "GET",
+      "ruta": "/usuarios",
+      "archivo": "BACKEND/src/routes/users.js",
+      "linea": 74,
+      "autenticacion": "Sí",
+      "cc_aprox": 10
+    },
+    {
+      "publico_por_diseno": false,
+      "metodo": "GET",
+      "ruta": "/usuarios/:id",
+      "archivo": "BACKEND/src/routes/users.js",
+      "linea": 140,
+      "autenticacion": "Sí",
+      "cc_aprox": 12
+    },
+    {
+      "publico_por_diseno": false,
+      "metodo": "PUT",
+      "ruta": "/usuarios/:id",
+      "archivo": "BACKEND/src/routes/users.js",
+      "linea": 246,
+      "autenticacion": "Sí",
+      "cc_aprox": 5
+    },
+    {
+      "publico_por_diseno": false,
+      "metodo": "DELETE",
+      "ruta": "/usuarios/:id",
+      "archivo": "BACKEND/src/routes/users.js",
+      "linea": 571,
+      "autenticacion": "Parcial",
+      "cc_aprox": 5
+    }
+  ],
+  "findings": [
+    {
+      "rule": "S03",
+      "titulo": "Contraseña almacenada/comparada en texto plano (sin hash)",
+      "severidad": "Crítica",
+      "cwe": "CWE-256 / CWE-916",
+      "owasp": "A02:2021",
+      "iso25010": "Seguridad – Confidencialidad",
+      "archivo": "BACKEND/src/routes/auth.js",
+      "linea": 21,
+      "evidencia": "if (user.contrasena !== password) {"
+    },
+    {
+      "rule": "S03",
+      "titulo": "Contraseña almacenada/comparada en texto plano (sin hash)",
+      "severidad": "Crítica",
+      "cwe": "CWE-256 / CWE-916",
+      "owasp": "A02:2021",
+      "iso25010": "Seguridad – Confidencialidad",
+      "archivo": "BACKEND/src/routes/auth.js",
+      "linea": 110,
+      "evidencia": "\"INSERT INTO usuarios (nombre_usuario, contrasena, correo) VALUES ($1, $2, $3) RETURNING id, nombre_usuario, correo, created_at\",",
+      "nota": "La contraseña se inserta sin derivación (bcrypt/argon2)"
+    },
+    {
+      "rule": "S03",
+      "titulo": "Contraseña almacenada/comparada en texto plano (sin hash)",
+      "severidad": "Crítica",
+      "cwe": "CWE-256 / CWE-916",
+      "owasp": "A02:2021",
+      "iso25010": "Seguridad – Confidencialidad",
+      "archivo": "BACKEND/src/routes/users.js",
+      "linea": 36,
+      "evidencia": "\"INSERT INTO usuarios (nombre_usuario, contrasena, correo) VALUES ($1, $2, $3) RETURNING id, nombre_usuario, correo, created_at\",",
+      "nota": "La contraseña se inserta sin derivación (bcrypt/argon2)"
+    },
+    {
+      "rule": "S04",
+      "titulo": "Endpoint sin verificación de autenticación/autorización",
+      "severidad": "Crítica",
+      "cwe": "CWE-306 / CWE-862",
+      "owasp": "A01:2021 / API5:2023",
+      "iso25010": "Seguridad – Confidencialidad/Integridad",
+      "archivo": "BACKEND/src/routes/pacientes.js",
+      "linea": 249,
+      "evidencia": "GET /pacientes/buscar/rut/:rut — no invoca getUserFromAuthHeader/requireRole"
+    },
+    {
+      "rule": "S04",
+      "titulo": "Endpoint sin verificación de autenticación/autorización",
+      "severidad": "Crítica",
+      "cwe": "CWE-306 / CWE-862",
+      "owasp": "A01:2021 / API5:2023",
+      "iso25010": "Seguridad – Confidencialidad/Integridad",
+      "archivo": "BACKEND/src/routes/roles.js",
+      "linea": 18,
+      "evidencia": "POST /roles — decodifica el token pero no rechaza solicitudes anónimas"
+    },
+    {
+      "rule": "S04",
+      "titulo": "Endpoint sin verificación de autenticación/autorización",
+      "severidad": "Crítica",
+      "cwe": "CWE-306 / CWE-862",
+      "owasp": "A01:2021 / API5:2023",
+      "iso25010": "Seguridad – Confidencialidad/Integridad",
+      "archivo": "BACKEND/src/routes/roles.js",
+      "linea": 36,
+      "evidencia": "GET /roles — no invoca getUserFromAuthHeader/requireRole"
+    },
+    {
+      "rule": "S04",
+      "titulo": "Endpoint sin verificación de autenticación/autorización",
+      "severidad": "Crítica",
+      "cwe": "CWE-306 / CWE-862",
+      "owasp": "A01:2021 / API5:2023",
+      "iso25010": "Seguridad – Confidencialidad/Integridad",
+      "archivo": "BACKEND/src/routes/roles.js",
+      "linea": 46,
+      "evidencia": "GET /roles/:id — no invoca getUserFromAuthHeader/requireRole"
+    },
+    {
+      "rule": "S04",
+      "titulo": "Endpoint sin verificación de autenticación/autorización",
+      "severidad": "Crítica",
+      "cwe": "CWE-306 / CWE-862",
+      "owasp": "A01:2021 / API5:2023",
+      "iso25010": "Seguridad – Confidencialidad/Integridad",
+      "archivo": "BACKEND/src/routes/roles.js",
+      "linea": 57,
+      "evidencia": "PUT /roles/:id — decodifica el token pero no rechaza solicitudes anónimas"
+    },
+    {
+      "rule": "S04",
+      "titulo": "Endpoint sin verificación de autenticación/autorización",
+      "severidad": "Crítica",
+      "cwe": "CWE-306 / CWE-862",
+      "owasp": "A01:2021 / API5:2023",
+      "iso25010": "Seguridad – Confidencialidad/Integridad",
+      "archivo": "BACKEND/src/routes/roles.js",
+      "linea": 76,
+      "evidencia": "DELETE /roles/:id — decodifica el token pero no rechaza solicitudes anónimas"
+    },
+    {
+      "rule": "S04",
+      "titulo": "Endpoint sin verificación de autenticación/autorización",
+      "severidad": "Crítica",
+      "cwe": "CWE-306 / CWE-862",
+      "owasp": "A01:2021 / API5:2023",
+      "iso25010": "Seguridad – Confidencialidad/Integridad",
+      "archivo": "BACKEND/src/routes/users.js",
+      "linea": 571,
+      "evidencia": "DELETE /usuarios/:id — decodifica el token pero no rechaza solicitudes anónimas"
+    },
+    {
+      "rule": "S05",
+      "titulo": "Autorización evaluada después de ejecutar la operación",
+      "severidad": "Crítica",
+      "cwe": "CWE-696 / CWE-862",
+      "owasp": "A01:2021",
+      "iso25010": "Seguridad – Integridad",
+      "archivo": "BACKEND/src/routes/roles.js",
+      "linea": 18,
+      "evidencia": "POST /roles — ejecuta pool.query('INSERT INTO roles (nombre) VALUES ($1) RETURNING… antes de leer el token"
+    },
+    {
+      "rule": "S05",
+      "titulo": "Autorización evaluada después de ejecutar la operación",
+      "severidad": "Crítica",
+      "cwe": "CWE-696 / CWE-862",
+      "owasp": "A01:2021",
+      "iso25010": "Seguridad – Integridad",
+      "archivo": "BACKEND/src/routes/roles.js",
+      "linea": 57,
+      "evidencia": "PUT /roles/:id — ejecuta pool.query('UPDATE roles SET nombre=$1 WHERE id=$2 RETURNING… antes de leer el token"
+    },
+    {
+      "rule": "S05",
+      "titulo": "Autorización evaluada después de ejecutar la operación",
+      "severidad": "Crítica",
+      "cwe": "CWE-696 / CWE-862",
+      "owasp": "A01:2021",
+      "iso25010": "Seguridad – Integridad",
+      "archivo": "BACKEND/src/routes/roles.js",
+      "linea": 76,
+      "evidencia": "DELETE /roles/:id — ejecuta pool.query('DELETE FROM roles WHERE id=$1 RETURNING *', [req… antes de leer el token"
+    },
+    {
+      "rule": "S05",
+      "titulo": "Autorización evaluada después de ejecutar la operación",
+      "severidad": "Crítica",
+      "cwe": "CWE-696 / CWE-862",
+      "owasp": "A01:2021",
+      "iso25010": "Seguridad – Integridad",
+      "archivo": "BACKEND/src/routes/users.js",
+      "linea": 571,
+      "evidencia": "DELETE /usuarios/:id — ejecuta pool.query( \"DELETE FROM usuarios WHERE id=$1 RETURNI… antes de leer el token"
+    },
+    {
+      "rule": "S15",
+      "titulo": "Credenciales por defecto en datos semilla (usuario = contraseña)",
+      "severidad": "Crítica",
+      "cwe": "CWE-1392 / CWE-521",
+      "owasp": "A07:2021",
+      "iso25010": "Seguridad – Autenticidad",
+      "archivo": "BACKEND/sql/dump-cuidarteplus.sql",
+      "linea": 288,
+      "evidencia": "INSERT INTO public.usuarios OVERRIDING SYSTEM VALUE VALUES (1, 'admin', '****', 'admin@cuidarteplus.com');"
+    },
+    {
+      "rule": "S15",
+      "titulo": "Credenciales por defecto en datos semilla (usuario = contraseña)",
+      "severidad": "Crítica",
+      "cwe": "CWE-1392 / CWE-521",
+      "owasp": "A07:2021",
+      "iso25010": "Seguridad – Autenticidad",
+      "archivo": "BACKEND/sql/dump-cuidarteplus.sql",
+      "linea": 289,
+      "evidencia": "INSERT INTO public.usuarios OVERRIDING SYSTEM VALUE VALUES (2, 'medico', '****', 'medico@cuidarteplus.com');"
+    },
+    {
+      "rule": "S15",
+      "titulo": "Credenciales por defecto en datos semilla (usuario = contraseña)",
+      "severidad": "Crítica",
+      "cwe": "CWE-1392 / CWE-521",
+      "owasp": "A07:2021",
+      "iso25010": "Seguridad – Autenticidad",
+      "archivo": "BACKEND/sql/dump-cuidarteplus.sql",
+      "linea": 290,
+      "evidencia": "INSERT INTO public.usuarios OVERRIDING SYSTEM VALUE VALUES (3, 'paciente', '****', 'paciente@cuidarteplus.com');"
+    },
+    {
+      "rule": "S01",
+      "titulo": "Secreto JWT con valor por defecto inseguro (fallback hardcodeado)",
+      "severidad": "Alta",
+      "cwe": "CWE-798",
+      "owasp": "A07:2021 / API2:2023",
+      "iso25010": "Seguridad – Autenticidad",
+      "archivo": "BACKEND/src/db.js",
+      "linea": 6,
+      "evidencia": "\"postgres://postgres:****@localhost:5432/cuidarteplus\";",
+      "nota": "Cadena de conexión con contraseña embebida"
+    },
+    {
+      "rule": "S01",
+      "titulo": "Secreto JWT con valor por defecto inseguro (fallback hardcodeado)",
+      "severidad": "Alta",
+      "cwe": "CWE-798",
+      "owasp": "A07:2021 / API2:2023",
+      "iso25010": "Seguridad – Autenticidad",
+      "archivo": "BACKEND/src/routes/audit.js",
+      "linea": 6,
+      "evidencia": "const JWT_SECRET = process.env.JWT_SECRET || \"inseguro\";"
+    },
+    {
+      "rule": "S01",
+      "titulo": "Secreto JWT con valor por defecto inseguro (fallback hardcodeado)",
+      "severidad": "Alta",
+      "cwe": "CWE-798",
+      "owasp": "A07:2021 / API2:2023",
+      "iso25010": "Seguridad – Autenticidad",
+      "archivo": "BACKEND/src/routes/auth.js",
+      "linea": 8,
+      "evidencia": "const JWT_SECRET = process.env.JWT_SECRET || \"inseguro\";"
+    },
+    {
+      "rule": "S01",
+      "titulo": "Secreto JWT con valor por defecto inseguro (fallback hardcodeado)",
+      "severidad": "Alta",
+      "cwe": "CWE-798",
+      "owasp": "A07:2021 / API2:2023",
+      "iso25010": "Seguridad – Autenticidad",
+      "archivo": "BACKEND/src/routes/documentos.js",
+      "linea": 7,
+      "evidencia": "const JWT_SECRET = process.env.JWT_SECRET || \"inseguro\";"
+    },
+    {
+      "rule": "S01",
+      "titulo": "Secreto JWT con valor por defecto inseguro (fallback hardcodeado)",
+      "severidad": "Alta",
+      "cwe": "CWE-798",
+      "owasp": "A07:2021 / API2:2023",
+      "iso25010": "Seguridad – Autenticidad",
+      "archivo": "BACKEND/src/routes/examenes.js",
+      "linea": 8,
+      "evidencia": "const JWT_SECRET = process.env.JWT_SECRET || \"inseguro\";"
+    },
+    {
+      "rule": "S01",
+      "titulo": "Secreto JWT con valor por defecto inseguro (fallback hardcodeado)",
+      "severidad": "Alta",
+      "cwe": "CWE-798",
+      "owasp": "A07:2021 / API2:2023",
+      "iso25010": "Seguridad – Autenticidad",
+      "archivo": "BACKEND/src/routes/pacientes.js",
+      "linea": 9,
+      "evidencia": "const JWT_SECRET = process.env.JWT_SECRET || \"inseguro\";"
+    },
+    {
+      "rule": "S01",
+      "titulo": "Secreto JWT con valor por defecto inseguro (fallback hardcodeado)",
+      "severidad": "Alta",
+      "cwe": "CWE-798",
+      "owasp": "A07:2021 / API2:2023",
+      "iso25010": "Seguridad – Autenticidad",
+      "archivo": "BACKEND/src/routes/roles.js",
+      "linea": 5,
+      "evidencia": "const JWT_SECRET = process.env.JWT_SECRET || 'inseguro';"
+    },
+    {
+      "rule": "S01",
+      "titulo": "Secreto JWT con valor por defecto inseguro (fallback hardcodeado)",
+      "severidad": "Alta",
+      "cwe": "CWE-798",
+      "owasp": "A07:2021 / API2:2023",
+      "iso25010": "Seguridad – Autenticidad",
+      "archivo": "BACKEND/src/routes/users.js",
+      "linea": 8,
+      "evidencia": "const JWT_SECRET = process.env.JWT_SECRET || \"inseguro\";"
+    },
+    {
+      "rule": "S02",
+      "titulo": "Archivo .env / secreto versionado en el repositorio",
+      "severidad": "Alta",
+      "cwe": "CWE-538 / CWE-798",
+      "owasp": "A05:2021",
+      "iso25010": "Seguridad – Confidencialidad",
+      "archivo": ".env",
+      "linea": 1,
+      "evidencia": "Archivo versionado en Git: .env"
+    },
+    {
+      "rule": "S02",
+      "titulo": "Archivo .env / secreto versionado en el repositorio",
+      "severidad": "Alta",
+      "cwe": "CWE-538 / CWE-798",
+      "owasp": "A05:2021",
+      "iso25010": "Seguridad – Confidencialidad",
+      "archivo": "BACKEND/.env",
+      "linea": 1,
+      "evidencia": "Archivo versionado en Git: BACKEND/.env"
+    },
+    {
+      "rule": "S02",
+      "titulo": "Archivo .env / secreto versionado en el repositorio",
+      "severidad": "Alta",
+      "cwe": "CWE-538 / CWE-798",
+      "owasp": "A05:2021",
+      "iso25010": "Seguridad – Confidencialidad",
+      "archivo": "FRONTEND/.env",
+      "linea": 1,
+      "evidencia": "Archivo versionado en Git: FRONTEND/.env"
+    },
+    {
+      "rule": "S02",
+      "titulo": "Archivo .env / secreto versionado en el repositorio",
+      "severidad": "Alta",
+      "cwe": "CWE-538 / CWE-798",
+      "owasp": "A05:2021",
+      "iso25010": "Seguridad – Confidencialidad",
+      "archivo": "README.md",
+      "linea": 30,
+      "evidencia": "1. JWT_SECRET: `0d1d81…` Llave utilizada para cifrar y generar los tokens de sesión"
+    },
+    {
+      "rule": "S09",
+      "titulo": "Login sin limitación de intentos (rate limiting / bloqueo)",
+      "severidad": "Alta",
+      "cwe": "CWE-307",
+      "owasp": "A07:2021 / API4:2023",
+      "iso25010": "Seguridad – Autenticidad",
+      "archivo": "BACKEND/src/routes/auth.js",
+      "linea": 10,
+      "evidencia": "router.post(\"/login\", …) sin express-rate-limit ni bloqueo por intentos"
+    },
+    {
+      "rule": "S23",
+      "titulo": "Registro sin consentimiento explícito para datos sensibles de salud",
+      "severidad": "Alta",
+      "cwe": "CWE-359",
+      "owasp": "A04:2021",
+      "iso25010": "Seguridad / Cumplimiento (Ley 19.628 – 21.719)",
+      "archivo": "FRONTEND/src/pages/auth/Register.jsx",
+      "linea": 1,
+      "evidencia": "El formulario de registro no solicita aceptación de Política de Privacidad ni consentimiento expreso"
+    },
+    {
+      "rule": "S04",
+      "titulo": "Directorio de documentos servido estáticamente sin autenticación",
+      "severidad": "Media",
+      "cwe": "CWE-306 / CWE-862",
+      "owasp": "A01:2021 / API5:2023",
+      "iso25010": "Seguridad – Confidencialidad/Integridad",
+      "archivo": "BACKEND/src/app.js",
+      "linea": 43,
+      "evidencia": "app.use(\"/files/documentos\", express.static(uploadsDir))"
+    },
+    {
+      "rule": "S06",
+      "titulo": "Exposición de mensajes internos de error al cliente",
+      "severidad": "Media",
+      "cwe": "CWE-209",
+      "owasp": "A05:2021",
+      "iso25010": "Seguridad – Confidencialidad",
+      "archivo": "BACKEND/src/routes/audit.js",
+      "linea": 41,
+      "evidencia": "glosa: err.message || err.toString(),"
+    },
+    {
+      "rule": "S06",
+      "titulo": "Exposición de mensajes internos de error al cliente",
+      "severidad": "Media",
+      "cwe": "CWE-209",
+      "owasp": "A05:2021",
+      "iso25010": "Seguridad – Confidencialidad",
+      "archivo": "BACKEND/src/routes/audit.js",
+      "linea": 107,
+      "evidencia": "glosa: err.message || err.toString(),"
+    },
+    {
+      "rule": "S06",
+      "titulo": "Exposición de mensajes internos de error al cliente",
+      "severidad": "Media",
+      "cwe": "CWE-209",
+      "owasp": "A05:2021",
+      "iso25010": "Seguridad – Confidencialidad",
+      "archivo": "BACKEND/src/routes/auth.js",
+      "linea": 67,
+      "evidencia": ".json({ error: \"Error en login\", glosa: err.message || err.toString() });"
+    },
+    {
+      "rule": "S06",
+      "titulo": "Exposición de mensajes internos de error al cliente",
+      "severidad": "Media",
+      "cwe": "CWE-209",
+      "owasp": "A05:2021",
+      "iso25010": "Seguridad – Confidencialidad",
+      "archivo": "BACKEND/src/routes/auth.js",
+      "linea": 163,
+      "evidencia": "glosa: err.message || err.toString(),"
+    },
+    {
+      "rule": "S06",
+      "titulo": "Exposición de mensajes internos de error al cliente",
+      "severidad": "Media",
+      "cwe": "CWE-209",
+      "owasp": "A05:2021",
+      "iso25010": "Seguridad – Confidencialidad",
+      "archivo": "BACKEND/src/routes/documentos.js",
+      "linea": 115,
+      "evidencia": "glosa: err.message || err.toString(),"
+    },
+    {
+      "rule": "S06",
+      "titulo": "Exposición de mensajes internos de error al cliente",
+      "severidad": "Media",
+      "cwe": "CWE-209",
+      "owasp": "A05:2021",
+      "iso25010": "Seguridad – Confidencialidad",
+      "archivo": "BACKEND/src/routes/documentos.js",
+      "linea": 178,
+      "evidencia": "glosa: err.message || err.toString(),"
+    },
+    {
+      "rule": "S06",
+      "titulo": "Exposición de mensajes internos de error al cliente",
+      "severidad": "Media",
+      "cwe": "CWE-209",
+      "owasp": "A05:2021",
+      "iso25010": "Seguridad – Confidencialidad",
+      "archivo": "BACKEND/src/routes/documentos.js",
+      "linea": 257,
+      "evidencia": "glosa: err.message || err.toString(),"
+    },
+    {
+      "rule": "S06",
+      "titulo": "Exposición de mensajes internos de error al cliente",
+      "severidad": "Media",
+      "cwe": "CWE-209",
+      "owasp": "A05:2021",
+      "iso25010": "Seguridad – Confidencialidad",
+      "archivo": "BACKEND/src/routes/documentos.js",
+      "linea": 295,
+      "evidencia": "glosa: err.message || err.toString(),"
+    },
+    {
+      "rule": "S06",
+      "titulo": "Exposición de mensajes internos de error al cliente",
+      "severidad": "Media",
+      "cwe": "CWE-209",
+      "owasp": "A05:2021",
+      "iso25010": "Seguridad – Confidencialidad",
+      "archivo": "BACKEND/src/routes/examenes.js",
+      "linea": 93,
+      "evidencia": "glosa: err.message || err.toString(),"
+    },
+    {
+      "rule": "S06",
+      "titulo": "Exposición de mensajes internos de error al cliente",
+      "severidad": "Media",
+      "cwe": "CWE-209",
+      "owasp": "A05:2021",
+      "iso25010": "Seguridad – Confidencialidad",
+      "archivo": "BACKEND/src/routes/examenes.js",
+      "linea": 173,
+      "evidencia": "glosa: err.message || err.toString(),"
+    },
+    {
+      "rule": "S06",
+      "titulo": "Exposición de mensajes internos de error al cliente",
+      "severidad": "Media",
+      "cwe": "CWE-209",
+      "owasp": "A05:2021",
+      "iso25010": "Seguridad – Confidencialidad",
+      "archivo": "BACKEND/src/routes/examenes.js",
+      "linea": 256,
+      "evidencia": "glosa: err.message || err.toString(),"
+    },
+    {
+      "rule": "S06",
+      "titulo": "Exposición de mensajes internos de error al cliente",
+      "severidad": "Media",
+      "cwe": "CWE-209",
+      "owasp": "A05:2021",
+      "iso25010": "Seguridad – Confidencialidad",
+      "archivo": "BACKEND/src/routes/examenes.js",
+      "linea": 324,
+      "evidencia": "glosa: err.message || err.toString(),"
+    },
+    {
+      "rule": "S06",
+      "titulo": "Exposición de mensajes internos de error al cliente",
+      "severidad": "Media",
+      "cwe": "CWE-209",
+      "owasp": "A05:2021",
+      "iso25010": "Seguridad – Confidencialidad",
+      "archivo": "BACKEND/src/routes/examenes.js",
+      "linea": 390,
+      "evidencia": "glosa: err.message || err.toString(),"
+    },
+    {
+      "rule": "S06",
+      "titulo": "Exposición de mensajes internos de error al cliente",
+      "severidad": "Media",
+      "cwe": "CWE-209",
+      "owasp": "A05:2021",
+      "iso25010": "Seguridad – Confidencialidad",
+      "archivo": "BACKEND/src/routes/examenes.js",
+      "linea": 428,
+      "evidencia": "glosa: err.message || err.toString(),"
+    },
+    {
+      "rule": "S06",
+      "titulo": "Exposición de mensajes internos de error al cliente",
+      "severidad": "Media",
+      "cwe": "CWE-209",
+      "owasp": "A05:2021",
+      "iso25010": "Seguridad – Confidencialidad",
+      "archivo": "BACKEND/src/routes/pacientes.js",
+      "linea": 139,
+      "evidencia": "glosa: err.message || err.toString(),"
+    },
+    {
+      "rule": "S06",
+      "titulo": "Exposición de mensajes internos de error al cliente",
+      "severidad": "Media",
+      "cwe": "CWE-209",
+      "owasp": "A05:2021",
+      "iso25010": "Seguridad – Confidencialidad",
+      "archivo": "BACKEND/src/routes/pacientes.js",
+      "linea": 167,
+      "evidencia": "glosa: err.message || err.toString(),"
+    },
+    {
+      "rule": "S06",
+      "titulo": "Exposición de mensajes internos de error al cliente",
+      "severidad": "Media",
+      "cwe": "CWE-209",
+      "owasp": "A05:2021",
+      "iso25010": "Seguridad – Confidencialidad",
+      "archivo": "BACKEND/src/routes/pacientes.js",
+      "linea": 243,
+      "evidencia": "glosa: err.message || err.toString(),"
+    },
+    {
+      "rule": "S06",
+      "titulo": "Exposición de mensajes internos de error al cliente",
+      "severidad": "Media",
+      "cwe": "CWE-209",
+      "owasp": "A05:2021",
+      "iso25010": "Seguridad – Confidencialidad",
+      "archivo": "BACKEND/src/routes/pacientes.js",
+      "linea": 270,
+      "evidencia": "glosa: err.message || err.toString(),"
+    },
+    {
+      "rule": "S06",
+      "titulo": "Exposición de mensajes internos de error al cliente",
+      "severidad": "Media",
+      "cwe": "CWE-209",
+      "owasp": "A05:2021",
+      "iso25010": "Seguridad – Confidencialidad",
+      "archivo": "BACKEND/src/routes/pacientes.js",
+      "linea": 381,
+      "evidencia": "glosa: err.message || err.toString(),"
+    },
+    {
+      "rule": "S06",
+      "titulo": "Exposición de mensajes internos de error al cliente",
+      "severidad": "Media",
+      "cwe": "CWE-209",
+      "owasp": "A05:2021",
+      "iso25010": "Seguridad – Confidencialidad",
+      "archivo": "BACKEND/src/routes/pacientes.js",
+      "linea": 419,
+      "evidencia": "glosa: err.message || err.toString(),"
+    },
+    {
+      "rule": "S06",
+      "titulo": "Exposición de mensajes internos de error al cliente",
+      "severidad": "Media",
+      "cwe": "CWE-209",
+      "owasp": "A05:2021",
+      "iso25010": "Seguridad – Confidencialidad",
+      "archivo": "BACKEND/src/routes/roles.js",
+      "linea": 32,
+      "evidencia": "res.status(500).json({ error: 'Error al crear rol', glosa: err.message || err.toString() });"
+    },
+    {
+      "rule": "S06",
+      "titulo": "Exposición de mensajes internos de error al cliente",
+      "severidad": "Media",
+      "cwe": "CWE-209",
+      "owasp": "A05:2021",
+      "iso25010": "Seguridad – Confidencialidad",
+      "archivo": "BACKEND/src/routes/roles.js",
+      "linea": 42,
+      "evidencia": "res.status(500).json({ error: 'Error al listar roles', glosa: err.message || err.toString() });"
+    },
+    {
+      "rule": "S06",
+      "titulo": "Exposición de mensajes internos de error al cliente",
+      "severidad": "Media",
+      "cwe": "CWE-209",
+      "owasp": "A05:2021",
+      "iso25010": "Seguridad – Confidencialidad",
+      "archivo": "BACKEND/src/routes/roles.js",
+      "linea": 53,
+      "evidencia": "res.status(500).json({ error: 'Error al obtener rol', glosa: err.message || err.toString() });"
+    },
+    {
+      "rule": "S06",
+      "titulo": "Exposición de mensajes internos de error al cliente",
+      "severidad": "Media",
+      "cwe": "CWE-209",
+      "owasp": "A05:2021",
+      "iso25010": "Seguridad – Confidencialidad",
+      "archivo": "BACKEND/src/routes/roles.js",
+      "linea": 72,
+      "evidencia": "res.status(500).json({ error: 'Error al actualizar rol', glosa: err.message || err.toString() });"
+    },
+    {
+      "rule": "S06",
+      "titulo": "Exposición de mensajes internos de error al cliente",
+      "severidad": "Media",
+      "cwe": "CWE-209",
+      "owasp": "A05:2021",
+      "iso25010": "Seguridad – Confidencialidad",
+      "archivo": "BACKEND/src/routes/roles.js",
+      "linea": 90,
+      "evidencia": "res.status(500).json({ error: 'Error al eliminar rol', glosa: err.message || err.toString() });"
+    },
+    {
+      "rule": "S06",
+      "titulo": "Exposición de mensajes internos de error al cliente",
+      "severidad": "Media",
+      "cwe": "CWE-209",
+      "owasp": "A05:2021",
+      "iso25010": "Seguridad – Confidencialidad",
+      "archivo": "BACKEND/src/routes/tipo-examen.js",
+      "linea": 16,
+      "evidencia": "glosa: err.message || err.toString(),"
+    },
+    {
+      "rule": "S06",
+      "titulo": "Exposición de mensajes internos de error al cliente",
+      "severidad": "Media",
+      "cwe": "CWE-209",
+      "owasp": "A05:2021",
+      "iso25010": "Seguridad – Confidencialidad",
+      "archivo": "BACKEND/src/routes/tipo-examen.js",
+      "linea": 37,
+      "evidencia": "glosa: err.message || err.toString(),"
+    },
+    {
+      "rule": "S06",
+      "titulo": "Exposición de mensajes internos de error al cliente",
+      "severidad": "Media",
+      "cwe": "CWE-209",
+      "owasp": "A05:2021",
+      "iso25010": "Seguridad – Confidencialidad",
+      "archivo": "BACKEND/src/routes/users.js",
+      "linea": 69,
+      "evidencia": "glosa: err.message || err.toString(),"
+    },
+    {
+      "rule": "S06",
+      "titulo": "Exposición de mensajes internos de error al cliente",
+      "severidad": "Media",
+      "cwe": "CWE-209",
+      "owasp": "A05:2021",
+      "iso25010": "Seguridad – Confidencialidad",
+      "archivo": "BACKEND/src/routes/users.js",
+      "linea": 135,
+      "evidencia": "glosa: err.message || err.toString(),"
+    },
+    {
+      "rule": "S06",
+      "titulo": "Exposición de mensajes internos de error al cliente",
+      "severidad": "Media",
+      "cwe": "CWE-209",
+      "owasp": "A05:2021",
+      "iso25010": "Seguridad – Confidencialidad",
+      "archivo": "BACKEND/src/routes/users.js",
+      "linea": 241,
+      "evidencia": "glosa: err.message || err.toString(),"
+    },
+    {
+      "rule": "S06",
+      "titulo": "Exposición de mensajes internos de error al cliente",
+      "severidad": "Media",
+      "cwe": "CWE-209",
+      "owasp": "A05:2021",
+      "iso25010": "Seguridad – Confidencialidad",
+      "archivo": "BACKEND/src/routes/users.js",
+      "linea": 278,
+      "evidencia": "glosa: err.message || err.toString(),"
+    },
+    {
+      "rule": "S06",
+      "titulo": "Exposición de mensajes internos de error al cliente",
+      "severidad": "Media",
+      "cwe": "CWE-209",
+      "owasp": "A05:2021",
+      "iso25010": "Seguridad – Confidencialidad",
+      "archivo": "BACKEND/src/routes/users.js",
+      "linea": 432,
+      "evidencia": "glosa: err.message || err.toString(),"
+    },
+    {
+      "rule": "S06",
+      "titulo": "Exposición de mensajes internos de error al cliente",
+      "severidad": "Media",
+      "cwe": "CWE-209",
+      "owasp": "A05:2021",
+      "iso25010": "Seguridad – Confidencialidad",
+      "archivo": "BACKEND/src/routes/users.js",
+      "linea": 566,
+      "evidencia": "glosa: err.message || err.toString(),"
+    },
+    {
+      "rule": "S06",
+      "titulo": "Exposición de mensajes internos de error al cliente",
+      "severidad": "Media",
+      "cwe": "CWE-209",
+      "owasp": "A05:2021",
+      "iso25010": "Seguridad – Confidencialidad",
+      "archivo": "BACKEND/src/routes/users.js",
+      "linea": 594,
+      "evidencia": "glosa: err.message || err.toString(),"
+    },
+    {
+      "rule": "S10",
+      "titulo": "Retardo artificial en rutas productivas (delay middleware)",
+      "severidad": "Media",
+      "cwe": "CWE-1050",
+      "owasp": "API4:2023",
+      "iso25010": "Eficiencia de desempeño – Comportamiento temporal",
+      "archivo": "BACKEND/src/routes/documentos.js",
+      "linea": 66,
+      "evidencia": "router.post(\"/\", delayMiddleware(5000), upload.single(\"documento\"), async (req, res) => {"
+    },
+    {
+      "rule": "S10",
+      "titulo": "Retardo artificial en rutas productivas (delay middleware)",
+      "severidad": "Media",
+      "cwe": "CWE-1050",
+      "owasp": "API4:2023",
+      "iso25010": "Eficiencia de desempeño – Comportamiento temporal",
+      "archivo": "BACKEND/src/routes/examenes.js",
+      "linea": 46,
+      "evidencia": "router.post(\"/\", delayMiddleware(5000), validate(examenMedicoSchema), async (req, res) => {"
+    },
+    {
+      "rule": "S10",
+      "titulo": "Retardo artificial en rutas productivas (delay middleware)",
+      "severidad": "Media",
+      "cwe": "CWE-1050",
+      "owasp": "API4:2023",
+      "iso25010": "Eficiencia de desempeño – Comportamiento temporal",
+      "archivo": "BACKEND/src/routes/examenes.js",
+      "linea": 99,
+      "evidencia": "router.get(\"/\", delayMiddleware(5000), async (req, res) => {"
+    },
+    {
+      "rule": "S10",
+      "titulo": "Retardo artificial en rutas productivas (delay middleware)",
+      "severidad": "Media",
+      "cwe": "CWE-1050",
+      "owasp": "API4:2023",
+      "iso25010": "Eficiencia de desempeño – Comportamiento temporal",
+      "archivo": "BACKEND/src/routes/examenes.js",
+      "linea": 330,
+      "evidencia": "router.put(\"/:id\", delayMiddleware(5000), validate(updateExamenMedicoSchema), async (req, res) => {"
+    },
+    {
+      "rule": "S10",
+      "titulo": "Retardo artificial en rutas productivas (delay middleware)",
+      "severidad": "Media",
+      "cwe": "CWE-1050",
+      "owasp": "API4:2023",
+      "iso25010": "Eficiencia de desempeño – Comportamiento temporal",
+      "archivo": "BACKEND/src/routes/pacientes.js",
+      "linea": 145,
+      "evidencia": "router.get(\"/\", delayMiddleware(5000), async (req, res) => {"
+    },
+    {
+      "rule": "S11",
+      "titulo": "Validación no aplica datos saneados (stripUnknown descartado) → asignación masiva",
+      "severidad": "Media",
+      "cwe": "CWE-915",
+      "owasp": "A04:2021 / API3:2023",
+      "iso25010": "Seguridad – Integridad",
+      "archivo": "BACKEND/src/middleware/validate.js",
+      "linea": 5,
+      "evidencia": "await schema.validate(data, { abortEarly: false, stripUnknown: true }); // resultado descartado"
+    },
+    {
+      "rule": "S12",
+      "titulo": "Dato personal (RUT) escrito en registro de auditoría/log",
+      "severidad": "Media",
+      "cwe": "CWE-532",
+      "owasp": "A09:2021",
+      "iso25010": "Seguridad – Confidencialidad",
+      "archivo": "BACKEND/src/routes/pacientes.js",
+      "linea": 124,
+      "evidencia": "`PACIENTES_CREAR: creó paciente ${primer_nombre} ${apellido_paterno} (RUT: ${rut})`,"
+    },
+    {
+      "rule": "S13",
+      "titulo": "Token de sesión almacenado en localStorage",
+      "severidad": "Media",
+      "cwe": "CWE-922",
+      "owasp": "A07:2021",
+      "iso25010": "Seguridad – Confidencialidad",
+      "archivo": "FRONTEND/src/context/AuthContext.jsx",
+      "linea": 41,
+      "evidencia": "localStorage.setItem(\"token\", newToken);"
+    },
+    {
+      "rule": "S16",
+      "titulo": "Política de contraseñas débil (mínimo 6 caracteres, sin complejidad)",
+      "severidad": "Media",
+      "cwe": "CWE-521",
+      "owasp": "A07:2021",
+      "iso25010": "Seguridad – Autenticidad",
+      "archivo": "BACKEND/src/validations/auth.js",
+      "linea": 24,
+      "evidencia": ".min(6, \"La contraseña debe tener al menos 6 caracteres\"),"
+    },
+    {
+      "rule": "S16",
+      "titulo": "Política de contraseñas débil (mínimo 6 caracteres, sin complejidad)",
+      "severidad": "Media",
+      "cwe": "CWE-521",
+      "owasp": "A07:2021",
+      "iso25010": "Seguridad – Autenticidad",
+      "archivo": "BACKEND/src/validations/empresa_usuarios.js",
+      "linea": 21,
+      "evidencia": ".min(6, \"La contraseña debe tener al menos 6 caracteres\")"
+    },
+    {
+      "rule": "S16",
+      "titulo": "Política de contraseñas débil (mínimo 6 caracteres, sin complejidad)",
+      "severidad": "Media",
+      "cwe": "CWE-521",
+      "owasp": "A07:2021",
+      "iso25010": "Seguridad – Autenticidad",
+      "archivo": "BACKEND/src/validations/users.js",
+      "linea": 12,
+      "evidencia": ".min(6, \"La contraseña debe tener al menos 6 caracteres\"),"
+    },
+    {
+      "rule": "S16",
+      "titulo": "Política de contraseñas débil (mínimo 6 caracteres, sin complejidad)",
+      "severidad": "Media",
+      "cwe": "CWE-521",
+      "owasp": "A07:2021",
+      "iso25010": "Seguridad – Autenticidad",
+      "archivo": "BACKEND/src/validations/users.js",
+      "linea": 33,
+      "evidencia": ".min(6, \"La contraseña debe tener al menos 6 caracteres\")"
+    },
+    {
+      "rule": "S16",
+      "titulo": "Política de contraseñas débil (mínimo 6 caracteres, sin complejidad)",
+      "severidad": "Media",
+      "cwe": "CWE-521",
+      "owasp": "A07:2021",
+      "iso25010": "Seguridad – Autenticidad",
+      "archivo": "FRONTEND/src/pages/auth/Register.jsx",
+      "linea": 20,
+      "evidencia": ".min(6, \"La contraseña debe tener al menos 6 caracteres\"),"
+    },
+    {
+      "rule": "S16",
+      "titulo": "Política de contraseñas débil (mínimo 6 caracteres, sin complejidad)",
+      "severidad": "Media",
+      "cwe": "CWE-521",
+      "owasp": "A07:2021",
+      "iso25010": "Seguridad – Autenticidad",
+      "archivo": "FRONTEND/src/pages/usuarios/UsuariosTabCreate.jsx",
+      "linea": 35,
+      "evidencia": ".min(6, \"La contraseña debe tener al menos 6 caracteres\"),"
+    },
+    {
+      "rule": "S16",
+      "titulo": "Política de contraseñas débil (mínimo 6 caracteres, sin complejidad)",
+      "severidad": "Media",
+      "cwe": "CWE-521",
+      "owasp": "A07:2021",
+      "iso25010": "Seguridad – Autenticidad",
+      "archivo": "FRONTEND/src/validations/auth.js",
+      "linea": 29,
+      "evidencia": ".min(6, \"La contraseña debe tener al menos 6 caracteres\"),"
+    },
+    {
+      "rule": "S16",
+      "titulo": "Política de contraseñas débil (mínimo 6 caracteres, sin complejidad)",
+      "severidad": "Media",
+      "cwe": "CWE-521",
+      "owasp": "A07:2021",
+      "iso25010": "Seguridad – Autenticidad",
+      "archivo": "FRONTEND/src/validations/users.js",
+      "linea": 15,
+      "evidencia": ".min(6, \"La contraseña debe tener al menos 6 caracteres\"),"
+    },
+    {
+      "rule": "S17",
+      "titulo": "Imagen base con runtime fuera de soporte (Node.js 18 EOL) / contenedor ejecuta como root",
+      "severidad": "Media",
+      "cwe": "CWE-1104 / CWE-250",
+      "owasp": "A06:2021",
+      "iso25010": "Mantenibilidad / Flexibilidad",
+      "archivo": "BACKEND/Dockerfile",
+      "linea": 1,
+      "evidencia": "FROM node:18-alpine (Node.js 18 sin soporte desde 30-04-2025)"
+    },
+    {
+      "rule": "S17",
+      "titulo": "Imagen base con runtime fuera de soporte (Node.js 18 EOL) / contenedor ejecuta como root",
+      "severidad": "Media",
+      "cwe": "CWE-1104 / CWE-250",
+      "owasp": "A06:2021",
+      "iso25010": "Mantenibilidad / Flexibilidad",
+      "archivo": "BACKEND/Dockerfile",
+      "linea": 1,
+      "evidencia": "No se define USER no privilegiado: el proceso corre como root"
+    },
+    {
+      "rule": "S18",
+      "titulo": "Dockerfile copia directorio no versionado (build no reproducible desde clon limpio)",
+      "severidad": "Media",
+      "cwe": "CWE-1068",
+      "owasp": "A05:2021",
+      "iso25010": "Flexibilidad – Instalabilidad",
+      "archivo": "BACKEND/Dockerfile",
+      "linea": 14,
+      "evidencia": "COPY uploads/ ./uploads/  ← BACKEND/uploads/ no existe en un clon limpio"
+    },
+    {
+      "rule": "S19",
+      "titulo": "Validación de tipo de archivo basada sólo en MIME declarado por el cliente",
+      "severidad": "Media",
+      "cwe": "CWE-434",
+      "owasp": "A04:2021",
+      "iso25010": "Seguridad – Integridad",
+      "archivo": "BACKEND/src/routes/documentos.js",
+      "linea": 22,
+      "evidencia": "if (allowedMimes.includes(file.mimetype)) {"
+    },
+    {
+      "rule": "S22",
+      "titulo": "Validación de RUT sólo por formato (sin dígito verificador módulo 11)",
+      "severidad": "Media",
+      "cwe": "CWE-1286",
+      "owasp": "A04:2021",
+      "iso25010": "Adecuación funcional – Corrección",
+      "archivo": "BACKEND/src/validations/auth.js",
+      "linea": 32,
+      "evidencia": ".matches(/^([0-9]{1,2}(\\.[0-9]{3})*-[0-9kK]|[0-9]+-[0-9kK])$/, \"El RUT debe tener formato válido (ej: 12.345.678-9 o"
+    },
+    {
+      "rule": "S22",
+      "titulo": "Validación de RUT sólo por formato (sin dígito verificador módulo 11)",
+      "severidad": "Media",
+      "cwe": "CWE-1286",
+      "owasp": "A04:2021",
+      "iso25010": "Adecuación funcional – Corrección",
+      "archivo": "BACKEND/src/validations/pacientes.js",
+      "linea": 8,
+      "evidencia": ".matches(/^([0-9]{1,2}(\\.[0-9]{3})*-[0-9kK]|[0-9]+-[0-9kK])$/, \"El RUT debe tener formato válido (ej: 12.345.678-9 o"
+    },
+    {
+      "rule": "S22",
+      "titulo": "Validación de RUT sólo por formato (sin dígito verificador módulo 11)",
+      "severidad": "Media",
+      "cwe": "CWE-1286",
+      "owasp": "A04:2021",
+      "iso25010": "Adecuación funcional – Corrección",
+      "archivo": "BACKEND/src/validations/pacientes.js",
+      "linea": 99,
+      "evidencia": ".matches(/^([0-9]{1,2}(\\.[0-9]{3})*-[0-9kK]|[0-9]+-[0-9kK])$/, \"El RUT debe tener formato válido (ej: 12.345.678-9 o"
+    },
+    {
+      "rule": "S22",
+      "titulo": "Validación de RUT sólo por formato (sin dígito verificador módulo 11)",
+      "severidad": "Media",
+      "cwe": "CWE-1286",
+      "owasp": "A04:2021",
+      "iso25010": "Adecuación funcional – Corrección",
+      "archivo": "FRONTEND/src/pages/auth/Register.jsx",
+      "linea": 28,
+      "evidencia": ".matches(/^([0-9]{1,2}(\\.[0-9]{3})*-[0-9kK]|[0-9]+-[0-9kK])$/, \"El RUT debe tener formato válido (ej: 12.345.678-9 o"
+    },
+    {
+      "rule": "S22",
+      "titulo": "Validación de RUT sólo por formato (sin dígito verificador módulo 11)",
+      "severidad": "Media",
+      "cwe": "CWE-1286",
+      "owasp": "A04:2021",
+      "iso25010": "Adecuación funcional – Corrección",
+      "archivo": "FRONTEND/src/validations/pacientes.js",
+      "linea": 7,
+      "evidencia": ".matches(/^([0-9]{1,2}(\\.[0-9]{3})*-[0-9kK]|[0-9]+-[0-9kK])$/, \"El RUT debe tener formato válido (ej: 12.345.678-9 o"
+    },
+    {
+      "rule": "S23",
+      "titulo": "Política de privacidad no identifica marco legal chileno aplicable",
+      "severidad": "Media",
+      "cwe": "CWE-359",
+      "owasp": "A04:2021",
+      "iso25010": "Seguridad / Cumplimiento (Ley 19.628 – 21.719)",
+      "archivo": "FRONTEND/src/pages/informacion/PoliticaPrivacidad.jsx",
+      "linea": 1,
+      "evidencia": "Sin referencia a Ley 19.628 / 21.719 / 20.584 ni a responsable del tratamiento"
+    },
+    {
+      "rule": "S07",
+      "titulo": "CORS abierto a cualquier origen",
+      "severidad": "Baja",
+      "cwe": "CWE-942",
+      "owasp": "A05:2021",
+      "iso25010": "Seguridad",
+      "archivo": "BACKEND/src/app.js",
+      "linea": 21,
+      "evidencia": "app.use(cors());"
+    },
+    {
+      "rule": "S08",
+      "titulo": "Ausencia de cabeceras de seguridad HTTP (helmet / CSP)",
+      "severidad": "Baja",
+      "cwe": "CWE-693",
+      "owasp": "A05:2021",
+      "iso25010": "Seguridad",
+      "archivo": "BACKEND/src/app.js",
+      "linea": 1,
+      "evidencia": "No se registra helmet() ni cabeceras CSP/X-Frame-Options/X-Content-Type-Options"
+    },
+    {
+      "rule": "S08",
+      "titulo": "Ausencia de cabeceras de seguridad HTTP (helmet / CSP)",
+      "severidad": "Baja",
+      "cwe": "CWE-693",
+      "owasp": "A05:2021",
+      "iso25010": "Seguridad",
+      "archivo": "FRONTEND/nginx.conf",
+      "linea": 1,
+      "evidencia": "nginx no define CSP, X-Frame-Options ni X-Content-Type-Options"
+    },
+    {
+      "rule": "S14",
+      "titulo": "Cabecera Content-Disposition con nombre de archivo sin sanear",
+      "severidad": "Baja",
+      "cwe": "CWE-113",
+      "owasp": "A03:2021",
+      "iso25010": "Seguridad – Integridad",
+      "archivo": "BACKEND/src/routes/documentos.js",
+      "linea": 249,
+      "evidencia": "\"Content-Disposition\",\r       `attachment; filename=\"${documento.nombre_archivo}\"`\r     );"
+    },
+    {
+      "rule": "S20",
+      "titulo": "Código duplicado: verificación de token replicada por módulo (sin middleware común)",
+      "severidad": "Baja",
+      "cwe": "CWE-1041",
+      "owasp": "A04:2021",
+      "iso25010": "Mantenibilidad – Modularidad",
+      "archivo": "BACKEND/src/routes/audit.js, BACKEND/src/routes/documentos.js, BACKEND/src/routes/examenes.js, BACKEND/src/routes/pacientes.js, BACKEND/src/routes/roles.js, BACKEND/src/routes/users.js",
+      "linea": 0,
+      "evidencia": "getUserFromAuthHeader() definida 6 veces; requireRole() 3 veces"
+    },
+    {
+      "rule": "S21",
+      "titulo": "EXPOSE del Dockerfile no coincide con el puerto real (PORT=4000)",
+      "severidad": "Baja",
+      "cwe": "CWE-489",
+      "owasp": "A05:2021",
+      "iso25010": "Seguridad",
+      "archivo": "BACKEND/Dockerfile",
+      "linea": 20,
+      "evidencia": "EXPOSE 3000"
+    },
+    {
+      "rule": "S21",
+      "titulo": "Documentación/Swagger y logging de desarrollo expuestos en producción",
+      "severidad": "Baja",
+      "cwe": "CWE-489",
+      "owasp": "A05:2021",
+      "iso25010": "Seguridad",
+      "archivo": "BACKEND/src/app.js",
+      "linea": 23,
+      "evidencia": "app.use(morgan(\"dev\"));"
+    },
+    {
+      "rule": "S21",
+      "titulo": "Documentación/Swagger y logging de desarrollo expuestos en producción",
+      "severidad": "Baja",
+      "cwe": "CWE-489",
+      "owasp": "A05:2021",
+      "iso25010": "Seguridad",
+      "archivo": "BACKEND/src/app.js",
+      "linea": 38,
+      "evidencia": "app.use(\"/docs\", swaggerUi.serve, swaggerUi.setup(openapi));"
+    }
+  ]
+}

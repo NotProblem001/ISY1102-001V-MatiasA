@@ -1,0 +1,77 @@
+﻿== E1. Almacenamiento de contraseñas (CP-05 / RNF-02) ==
+== E2. Resumen de formato de contraseñas ==
+ERROR:  syntax error at or near "﻿"
+LINE 1: ﻿-- Cuidarte+ · Evidencias a nivel de base de datos (solo le...
+        ^
+ total_usuarios | en_texto_plano | contrasena_igual_usuario 
+----------------+----------------+--------------------------
+              3 |              3 |                        3
+(1 row)
+
+== E3. Datos sensibles de salud almacenados sin cifrado a nivel de columna (RL-01) ==
+           column_name           | data_type 
+---------------------------------+-----------
+ rut                             | text
+ grupo_sanguineo                 | text
+ alergias                        | text
+ enfermedades_cronicas           | text
+ discapacidades                  | text
+ observaciones_medicas_generales | text
+(6 rows)
+
+ pacientes | con_enfermedad_cronica_legible | con_alergias_legibles 
+-----------+--------------------------------+-----------------------
+        20 |                             11 |                     4
+(1 row)
+
+== E4. Ausencia de campos de consentimiento / base de licitud (RL-01) ==
+ columnas_consentimiento 
+-------------------------
+                       0
+(1 row)
+
+== E5. Integridad de la auditoría: sin protección contra modificación (RL-03) ==
+ triggers_en_auditoria 
+-----------------------
+                     0
+(1 row)
+
+ grantee  | privilege_type 
+----------+----------------
+ postgres | DELETE
+ postgres | INSERT
+ postgres | REFERENCES
+ postgres | SELECT
+ postgres | TRIGGER
+ postgres | TRUNCATE
+ postgres | UPDATE
+(7 rows)
+
+== E6. Distribución de acciones auditadas (¿se registran lecturas de fichas?) ==
+ tipo_accion | eventos 
+-------------+---------
+ LOGIN       |       1
+(1 row)
+
+== E7. RUT de pacientes que no cumplen dígito verificador módulo 11 (RN-01) ==
+ id |    rut     | dv_correcto | dv_registrado 
+----+------------+-------------+---------------
+  2 | 16789456-K | 9           | K
+  3 | 14235678-5 | 3           | 5
+  4 | 18934567-9 | 4           | 9
+  5 | 13124567-4 | K           | 4
+  6 | 17456823-1 | 5           | 1
+  7 | 15897456-7 | 8           | 7
+  8 | 19234567-3 | 7           | 3
+  9 | 14567890-6 | 0           | 6
+ 10 | 17654321-K | 3           | K
+ 12 | 19543218-4 | K           | 4
+ 13 | 14987654-3 | 5           | 3
+ 14 | 17823456-7 | 0           | 7
+ 15 | 13456789-0 | 9           | 0
+ 16 | 18765432-6 | 7           | 6
+ 17 | 15678943-5 | 7           | 5
+ 18 | 19876543-1 | 0           | 1
+ 20 | 17543219-2 | 1           | 2
+(17 rows)
+

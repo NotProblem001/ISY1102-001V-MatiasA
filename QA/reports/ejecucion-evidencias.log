@@ -1,0 +1,76 @@
+﻿Inicio: 2026-11-02 14:08:21
+
+### 01 entorno
+captura: 01-entorno.png
+
+### 02 docker compose up
+captura: 02-docker-compose-up.png
+
+### 03 docker ps
+captura: 03-docker-ps.png
+
+### 04 smoke
+GET http://localhost:4444/  (salud de la API) -> HTTP 200 (3 ms) {"name":"cuidarteplus","status":"ok"}
+POST /autenticacion/login  (admin) -> HTTP 200 (32 ms) {"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvSWQiOiIxIiwibm9tYnJlVXN1YXJpbyI6ImFkbWluIiwicm9sSWQiOiIxIiwicm9sTm9tYnJlIjoiYWRtaW4iLCJwYWNpZW50ZUlkIjpudWxsLCJyb2xlcyI6W3siaWQiOiIxIiwibm9tYnJlIjoiYWRtaW4ifV0sImlhdCI6MTc5MzYzOTM4OSwiZXhwIjoxNzkzNjQ2NTg5fQ.CIp8FGUd214sCTC5qNugemtkUhEjZVFJb0xBvCvXc2U"}
+captura: 04-smoke-test.png
+
+### 05 SAST
+captura: 05-sast-resumen.png
+
+### 06 BD
+captura: 06-bd-contrasenas-datos-sensibles.png
+captura: 07-bd-auditoria-rut.png
+
+### 08 suite
+captura: 08-suite-resultados-1.png
+captura: 09-suite-resultados-2.png
+
+### CP-10
+GET /pacientes/buscar/rut/16789456-K   (sin cabecera Authorization) -> HTTP 200 (2 ms) {"id":"2","rut":"16789456-K","primer_nombre":"María","apellido_paterno":"González","apellido_materno":"Rojas","fecha_nacimiento":"1990-07-22T00:00:00.000Z","sexo":"F","nacionalidad":"Chilena","estado_civil":"soltero","email":"maria.gonzalez@gmail.com","telefono":"+56981112233","direccion":"Los Leones 456","contacto_emergencia_nombre":"Carlos González","contacto_emergencia_telefono":"+56990001122","contacto_emergencia_relacion":"Padre","tipo_prevision":"Isapre","tiene_convenio":false,"grupo_sanguineo":"A+","alergias":"Penicilina","enfermedades_cronicas":"Ninguna","discapacidades":"Ninguna","observaciones_medicas_generales":"Alergia medicamentosa registrada","usuario_id":null,"created_at":"2025-12-17T08:12:00.000Z","nombre_usuario":null}
+captura: 10-CP10-ficha-sin-autenticacion.png
+
+### CP-11
+GET /pacientes/1   (token paciente, ficha propia) -> HTTP 200 (4 ms) {"id":"1","rut":"11111111-1","primer_nombre":"Juan","apellido_paterno":"Pérez","apellido_materno":"Gómez","fecha_nacimiento":"1985-03-14T00:00:00.000Z","sexo":"M","nacionalidad":"Chilena","estado_civil":"casado","email":"paciente@cuidarteplus.com","telefono":"+56981234567","direccion":"Av. Providencia 123","contacto_emergencia_nombre":"María Pérez","contacto_emergencia_telefono":"+56999887766","contacto_emergencia_relacion":"Esposa","tipo_prevision":"Fonasa","tiene_convenio":true,"grupo_sanguineo":"O+","alergias":"Ninguna","enfermedades_cronicas":"Hipertensión","discapacidades":"Ninguna","observaciones_medicas_generales":"Control periódico de presión arterial","usuario_id":"3","created_at":"2025-12-17T08:10:00.000Z","nombre_usuario":"paciente"}
+GET /pacientes/2   (token paciente, ficha ajena) -> HTTP 403 (9 ms) {"error":"No autorizado","glosa":"Solo puede ver sus propios datos"}
+captura: 11-CP11-bola-control-correcto.png
+
+### CP-07
+POST /autenticacion/registro  (usuario de prueba qa_demo_del_141030) -> HTTP 201 (8 ms) {"message":"Usuario registrado exitosamente","usuario":{"id":"8","nombre_usuario":"qa_demo_del_141030","correo":"qa_demo_del_141030@cuidarte.test","created_at":"2026-11-02T17:10:33.699Z"}}
+DELETE /usuarios/8   (SIN cabecera Authorization) -> HTTP 200 (3 ms) {"deleted":true}
+GET /usuarios/8   (verificacion con token admin) -> HTTP 404 (3 ms) {"error":"No encontrado"}
+captura: 12-CP07-delete-sin-token.png
+
+### CP-09
+POST /usuarios con token de PACIENTE y rol_id = 1 -> HTTP 201 (4 ms) {"id":"10","nombre_usuario":"qa_demo_adm_141030","correo":"qa_demo_adm_141030@cuidarte.test","created_at":"2026-11-02T17:10:35.297Z"}
+captura: 13-CP09-escalamiento-privilegios.png
+
+### CP-08
+POST /roles   (SIN token) -> HTTP 201 (3 ms) {"id":"5","nombre":"qa_demo_rol_141030"}
+DELETE /roles/5   (SIN token) -> HTTP 200 (2 ms) {"deleted":true}
+captura: 14-CP08-roles-sin-autenticacion.png
+
+### CP-14
+PUT /pacientes/1  {grupo_sanguineo: 'AB-'}  (token PACIENTE) -> HTTP 200 (4 ms) {"id":"1","rut":"11111111-1","primer_nombre":"Juan","apellido_paterno":"Pérez","apellido_materno":"Gómez","fecha_nacimiento":"1985-03-14T00:00:00.000Z","sexo":"M","nacionalidad":"Chilena","estado_civil":"casado","email":"paciente@cuidarteplus.com","telefono":"+56981234567","direccion":"Av. Providencia 123","contacto_emergencia_nombre":"María Pérez","contacto_emergencia_telefono":"+56999887766","contacto_emergencia_relacion":"Esposa","tipo_prevision":"Fonasa","tiene_convenio":true,"grupo_sanguineo":"AB-","alergias":"Ninguna","enfermedades_cronicas":"Hipertensión","discapacidades":"Ninguna","observaciones_medicas_generales":"Control periódico de presión arterial","usuario_id":"3","created_at":"2025-12-17T08:10:00.000Z"}
+captura: 15-CP14-paciente-altera-dato-clinico.png
+
+### CP-22 CP-23
+GET /pacientes/abc   (token medico) -> HTTP 500 (4 ms) {"error":"Error al obtener paciente","glosa":"invalid input syntax for type bigint: \"abc\""}
+captura: 16-CP22-CP23-errores-cors-cabeceras.png
+
+### CP-25 CP-03
+captura: 17-CP25-CP03-rendimiento-fuerza-bruta.png
+
+### navegador
+captura navegador: 18-frontend-login.png (http://localhost:3333/)
+captura navegador: 19-swagger-api-docs.png (http://localhost:4444/docs)
+captura navegador: 20-navegador-ficha-sin-login.png (http://localhost:4444/pacientes/buscar/rut/16789456-K)
+
+### npm audit
+captura: 21-npm-audit-backend.png
+
+### trivy
+captura: 22-trivy-imagen-backend.png
+
+### eslint
+captura: 23-eslint-frontend.png
+Fin: 2026-11-02 14:12:19

@@ -1,0 +1,50 @@
+# Propuesta de pipeline de calidad y seguridad (RA3 · mejora continua)
+# Para activarlo, copiar a .github/workflows/qa.yml
+name: QA Cuidarte+
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  sast-sca:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - name: SAST propio (bloquea si hay hallazgos críticos)
+        run: |
+          node QA/static/sast-scan.mjs
+          node -e "const r=require('./QA/reports/sast-resultados.json'); if(r.resumen['Crítica']>0){console.error('Hallazgos críticos:',r.resumen['Crítica']);process.exit(1)}"
+      - name: npm audit (backend, dependencias productivas)
+        working-directory: BACKEND
+        run: npm ci --omit=dev && npm audit --omit=dev --audit-level=high
+      - name: ESLint frontend
+        working-directory: FRONTEND
+        run: npm ci && npx eslint . --max-warnings=0
+      - name: Detección de secretos (gitleaks)
+        uses: gitleaks/gitleaks-action@v2
+        env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: { name: reportes-qa, path: QA/reports }
+
+  dast:
+    needs: sast-sca
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: mkdir -p BACKEND/uploads/documentos   # mitigación de CP-27 hasta corregir el Dockerfile
+      - run: docker compose up -d --build && sleep 20
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - name: Pruebas dinámicas (28 casos)
+        run: node QA/tests/run-api-tests.mjs
+      - name: Puerta de calidad (0 fallos críticos)
+        run: node -e "const r=require('./QA/reports/resultados-pruebas.json');const c=r.resultados.filter(x=>x.estado==='FALLIDO'&&x.severidad==='Crítico');if(c.length){console.error(c.map(x=>x.id).join(', '));process.exit(1)}"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: { name: resultados-dast, path: QA/reports }
